@@ -18,6 +18,7 @@
   "homepage": "https://github.com/dnl-jst/lwass#readme",
   "dependencies": {
     "concat-stream": "^1.6.0",
+    "dnsbl-lookup": "^0.3.3",
     "nodemailer": "^4.0.1",
     "smtp-server": "^3.0.1"
   }

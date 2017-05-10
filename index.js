@@ -1,11 +1,30 @@
 const SMTPServer = require('smtp-server').SMTPServer;
 const SMTPConnection = require('nodemailer/lib/smtp-connection');
 const dns = require('dns');
-const concat = require('concat-stream')
+const concat = require('concat-stream');
+const lookup = require('dnsbl-lookup');
 
 const server = new SMTPServer({
   authOptional: true,
   logger: true,
+  onConnect: function (session, callback) {
+
+    var dnsbl = new lookup.dnsbl(session.remoteAddress);
+
+    // ignore errors when querying blacklist
+    dnsbl.on('error', function(error, blocklist) { });
+    
+    dnsbl.on('data', function(result, blocklist) {
+
+      if (result.status.toString() === 'listed') {
+        callback(new Error('blacklisted in ' + blocklist));
+      }
+    });
+
+    dnsbl.on('done', function() {
+      callback();
+    });
+  },
   onMailFrom: function (address, session, callback) {
 
     // currently accept any from address
