@@ -10,19 +10,23 @@ const server = new SMTPServer({
   onConnect: function (session, callback) {
 
     var dnsbl = new lookup.dnsbl(session.remoteAddress);
+    var listed = false;
 
     // ignore errors when querying blacklist
     dnsbl.on('error', function(error, blocklist) { });
-    
+
     dnsbl.on('data', function(result, blocklist) {
 
-      if (result.status.toString() === 'listed') {
+      if (result.status.toString() === 'listed' && !listed) {
+        listed = true;
         callback(new Error('blacklisted in ' + blocklist));
       }
     });
 
     dnsbl.on('done', function() {
-      callback();
+      if (!listed) {
+        callback();
+      }
     });
   },
   onMailFrom: function (address, session, callback) {
@@ -38,7 +42,6 @@ const server = new SMTPServer({
 
       if (err) {
 
-        console.log(err);
         callback(new Error('internal server error'));
 
       } else {
