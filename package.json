@@ -1,0 +1,19 @@
+{
+  "name": "lwass",
+  "version": "0.0.1",
+  "description": "lightweight anti-spam shield",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnl-jst/lwass.git"
+  },
+  "author": "Daniel Jost <info@daniel-jost.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dnl-jst/lwass/issues"
+  },
+  "homepage": "https://github.com/dnl-jst/lwass#readme"
+}
