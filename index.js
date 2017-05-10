@@ -19,7 +19,7 @@ const server = new SMTPServer({
 
       if (result.status.toString() === 'listed' && !listed) {
         listed = true;
-        callback(new Error('blacklisted in ' + blocklist));
+        callback(new Error(result.TXT || 'Blocked by ' + blocklist.zone ));
       }
     });
 
